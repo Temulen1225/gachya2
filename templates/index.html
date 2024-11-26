@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ガチャガチャ</title>
+    <style>body { background: url('{{ url_for('static', filename='images/background.webp') }}') no-repeat center center fixed; background-size: cover; font-family: Arial, sans-serif; color: white; text-align: center; }</style>
+</head>
+<body>
+    <h1>ガチャガチャ</h1>
+    
+    <!-- Гача татах товчнууд -->
+    <form method="post" action="{{ url_for('gacha') }}">
+        <button type="submit" name="single">Single Gacha (100円)</button>
+        <button type="submit" name="multi">11連ガチャ (1000円)</button>
+    </form>
+    
+    <!-- Сүүлийн таталтын үр дүнг харуулах -->
+    <h2>Last Result:</h2>
+    {% if results %}
+    <p style="color: orange; text-shadow: 2px 2px 4px black; font-weight: bold;">{{ results[-1]['rarity'] }}</p>
+    <img src="{{ url_for('static', filename=results[-1]['image']) }}" alt="{{ results[-1]['rarity'] }} card" width="150" style="border: 5px solid gold; border-radius: 10px; padding: 5px;">
+
+    {% else %}
+        <p>No results yet.</p>
+    {% endif %}
+    
+    <!-- Бүх үр дүнг жагсаалт хэлбэрээр харуулах -->
+    <h2>All Results:</h2>
+    <ul>
+        {% for result in results %}
+            <li>
+                {{ result['rarity'] }}
+                <img src="{{ url_for('static', filename=result['image']) }}" 
+                     alt="{{ result['rarity'] }} card" width="100">
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Үр дүнг дахин эхлүүлэх -->
+    <a href="{{ url_for('reset') }}">Reset Results</a>
+</body>
+</html>
